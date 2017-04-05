@@ -49,6 +49,47 @@ public class MessagesController : ApiController
 ```
 This will render a menu when the bot receives a message.
 
+## Authentication
+
+If your bot requires the user to login, you'll most likely want to make use of the excellent [AuthBot](https://github.com/MicrosoftDX/AuthBot) project. 
+
+The BotService has an Authenticator property that you can use to integrate with AuthBot (or some other authentication mechanism of your choosing): 
+
+```csharp
+//Implementation of IAuthenticator
+[Serializable]
+public class AzureAuthenticator : IAuthenticator
+{
+	public async Task<AuthenticationStatus> CheckAuthAsync(IDialogContext context)
+	{
+		var hasToken = !string.IsNullOrEmpty(await context.GetAccessToken(AuthSettings.Scopes));
+
+		return hasToken ?
+			AuthenticationStatus.Authenticated :
+			AuthenticationStatus.NotAuthenticated;
+	}
+
+	public Task RequestAuth(IDialogContext context, IMessageActivity activity)
+	{
+		return context.Forward(new AzureAuthDialog(AuthSettings.Scopes), _AuthComplete, activity, CancellationToken.None);
+	}
+
+	private async Task _AuthComplete(IDialogContext context, IAwaitable<object> result)
+	{
+		var auth = await result;
+		context.Done<object>(null);
+	}
+}
+```
+
+```csharp
+//In MessagesController.cs
+_BotService = new BotService(bot);
+_BotService.Authenticator = new AzureAuthenticator();
+```
+
+The BotService will then enforce authentication prior to displaying the menu.
+
 ## Helpers
 
 Let's say you've stored an object into the IBotDataBag, ie: PrivateConversationData and you want to progressively update it. 
