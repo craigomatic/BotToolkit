@@ -13,18 +13,27 @@ namespace BotToolkit
     public class MenuDialog : IDialog
     {
         public Menu Menu { get; private set; }
-        
-        public MenuDialog(Menu menu)
+
+        public IAuthenticator Authenticator { get; private set; }
+
+        public MenuDialog(Menu menu, IAuthenticator authenticator)
         {
             this.Menu = menu;
+            this.Authenticator = authenticator;
         }
 
-        public Task StartAsync(IDialogContext context)
+        public async Task StartAsync(IDialogContext context)
         {
-            var choices = this.Menu.MenuItems.Select(m => m.Label);
-            PromptDialog.Choice<string>(context, _SelectionMade, choices, this.Menu.Prompt);
-
-            return Task.Delay(0);
+            if (this.Authenticator != null &&
+                (await this.Authenticator.CheckAuthAsync(context) == AuthenticationStatus.NotAuthenticated))
+            {
+                context.Wait(MessageReceivedAsync);
+            }
+            else
+            {
+                var choices = this.Menu.MenuItems.Select(m => m.Label);
+                PromptDialog.Choice<string>(context, _SelectionMade, choices, this.Menu.Prompt);
+            }
         }
 
         private async Task _SelectionMade(IDialogContext context, IAwaitable<string> result)
@@ -41,10 +50,9 @@ namespace BotToolkit
             //favour local menu options if conflicts exist
             var foundMenuItem = this.Menu.MenuItems.Where(m => m.Label == selection).FirstOrDefault();
 
-
             if (foundMenuItem != null)
             {
-                context.PrivateConversationData.SetValue<MenuItem>("CurrentMenuItem", foundMenuItem);
+                context.PrivateConversationData.SetValue("CurrentMenuItem", foundMenuItem.Label);
                 foundMenuItem.Action.Display(context);
             }
 
@@ -55,15 +63,26 @@ namespace BotToolkit
         {
             var param = await result;
 
-            var menuItem = context.PrivateConversationData.Get<MenuItem>("CurrentMenuItem");
-            //menuItem.Action.Complete(result);
+            var menuItemLabel = context.PrivateConversationData.Get<string>("CurrentMenuItem");
+            var foundMenuItem = this.Menu.MenuItems.Where(m => m.Label == menuItemLabel).FirstOrDefault();
+            //foundMenuItem.Action.Complete(result);
         }
 
-        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
+        protected virtual async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
             var command = await result;
 
-            _HandleCommand(context, command.Text);
-        }
+            //test for authentication before proceeding
+            if (this.Authenticator != null &&
+                (await this.Authenticator.CheckAuthAsync(context) == AuthenticationStatus.NotAuthenticated))
+            {
+                await this.Authenticator.RequestAuth(context, command);
+
+            }
+            else
+            {
+                _HandleCommand(context, command.Text);
+            }
+        }        
     }
 }

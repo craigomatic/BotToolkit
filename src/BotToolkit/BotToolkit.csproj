@@ -80,7 +80,9 @@
     <Compile Include="Actions\DialogMenuAction.cs" />
     <Compile Include="Actions\IMenuAction.cs" />
     <Compile Include="BotService.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Dialog\MenuDialog.cs" />
+    <Compile Include="Model\IAuthenticator.cs" />
     <Compile Include="Model\Bot.cs" />
     <Compile Include="Model\CarouselItem.cs" />
     <Compile Include="ConversationExtensions.cs" />

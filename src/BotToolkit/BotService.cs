@@ -15,6 +15,8 @@ namespace BotToolkit
     {
         public Bot Bot { get; private set; }
 
+        public IAuthenticator Authenticator { get; set; }
+
         public BotService(Bot bot)
         {
             this.Bot = bot;
@@ -22,7 +24,7 @@ namespace BotToolkit
 
         public Task RespondAsync(IMessageActivity activity)
         {
-            return Conversation.SendAsync(activity, () => Chain.From(() => new MenuDialog(this.Bot.RootMenu)));
+            return Conversation.SendAsync(activity, () => Chain.From(() => new MenuDialog(this.Bot.RootMenu, this.Authenticator)));
         }
     }
 }
