@@ -55,8 +55,16 @@ If your bot requires the user to login, you'll most likely want to make use of t
 
 The BotService has an Authenticator property that you can use to integrate with AuthBot (or some other authentication mechanism of your choosing): 
 
+
 ```csharp
-//Implementation of IAuthenticator
+//In MessagesController.cs
+_BotService = new BotService(bot);
+_BotService.Authenticator = new AzureAuthenticator();
+```
+
+Here's a simple implementation of IAuthenticator for AuthBot:
+
+```csharp
 [Serializable]
 public class AzureAuthenticator : IAuthenticator
 {
@@ -80,12 +88,6 @@ public class AzureAuthenticator : IAuthenticator
 		context.Done<object>(null);
 	}
 }
-```
-
-```csharp
-//In MessagesController.cs
-_BotService = new BotService(bot);
-_BotService.Authenticator = new AzureAuthenticator();
 ```
 
 The BotService will then enforce authentication prior to displaying the menu.
