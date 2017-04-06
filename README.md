@@ -92,6 +92,12 @@ public class AzureAuthenticator : IAuthenticator
 
 The BotService will then enforce authentication prior to displaying the menu.
 
+## Typing Indicator
+
+If you want the bot to send the typing indicator automatically each time it receives a message, using `BotService.RespondAsync` is all that's needed, it's enabled by default. 
+
+If you don't want this behaviour, simply set the SendTypingIndicator boolean to false on BotService.
+
 ## Helpers
 
 Let's say you've stored an object into the IBotDataBag, ie: PrivateConversationData and you want to progressively update it. 
