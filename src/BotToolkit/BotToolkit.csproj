@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BotToolkit</RootNamespace>
     <AssemblyName>BotToolkit</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -77,10 +77,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CarouselItem.cs" />
+    <Compile Include="Actions\DialogMenuAction.cs" />
+    <Compile Include="Actions\IMenuAction.cs" />
+    <Compile Include="BotService.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Dialog\MenuDialog.cs" />
+    <Compile Include="Model\IAuthenticator.cs" />
+    <Compile Include="Model\Bot.cs" />
+    <Compile Include="Model\CarouselItem.cs" />
     <Compile Include="ConversationExtensions.cs" />
     <Compile Include="DataHelper.cs" />
-    <Compile Include="ICarouselItem.cs" />
+    <Compile Include="Model\Command.cs" />
+    <Compile Include="Model\ICarouselItem.cs" />
+    <Compile Include="Model\Menu.cs" />
+    <Compile Include="Model\MenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
