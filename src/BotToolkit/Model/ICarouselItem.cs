@@ -20,5 +20,7 @@ namespace BotToolkit.Model
         string Text { get; set; }
 
         object ActionValue { get; set; }
+
+        string CardImage { get; set; }
     }
 }

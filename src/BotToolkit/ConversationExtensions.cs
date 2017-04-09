@@ -20,6 +20,7 @@ namespace BotToolkit
                 msg.Attachments.Add(new ThumbnailCard
                 {
                     Title = item.Title,
+                    Images = new List<CardImage> { new CardImage { Url = item.CardImage } },
                     Subtitle = item.Subtitle,
                     Text = item.Text,
                     Buttons = new List<CardAction> { new CardAction(item.ActionType, item.ActionTitle, null, item.ActionValue) }
