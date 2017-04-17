@@ -11,4 +11,11 @@ namespace BotToolkit
         Authenticated,
         NotAuthenticated
     }
+
+    public enum DatePickerMode
+    {
+        Date,
+        Time,
+        DateAndTime
+    }
 }
