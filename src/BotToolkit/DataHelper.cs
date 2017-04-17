@@ -12,9 +12,19 @@ namespace BotToolkit
 
         public string Key { get; private set; }
 
+        private T _Value;
+
         public T Value
         {
-            get { return this.BotDataBag.Get<T>(this.Key); }
+            get
+            {
+                if (_Value == null)
+                {
+                    _Value = this.BotDataBag.Get<T>(this.Key);
+                }
+
+                return _Value;
+            }
         }
 
         public DataHelper(IBotDataBag botDataBag, string key)
@@ -26,7 +36,8 @@ namespace BotToolkit
         public void Dispose()
         {
             //save the context
-            this.BotDataBag.SetValue<T>(this.Key, this.Value);
+            this.BotDataBag.SetValue<T>(this.Key, _Value);
+            _Value = default(T);
         }
     }
 }
