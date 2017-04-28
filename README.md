@@ -98,6 +98,28 @@ If you want the bot to send the typing indicator automatically each time it rece
 
 If you don't want this behaviour, simply set the SendTypingIndicator boolean to false on BotService.
 
+## Pickers
+
+Some things need to be commonly asked for from the user so the toolkit includes some reusable pickers:
+
+[DatePickerDialog](https://github.com/craigomatic/BotToolkit/blob/master/src/BotToolkit/Dialog/DatePickerDialog.cs)
+
+Use the DatePickerDialog to pick dates and optionally times. It returns a DateTime with the result.
+
+```csharp
+var picker = new DatePickerDialog();
+picker.Mode = DatePickerMode.DateAndTime;
+context.Call(picker, DatePicked);
+```
+
+```csharp
+private async Task _DateReceived(IDialogContext context, IAwaitable<DateTime> result)
+{
+    var date = await result;
+    //do something with the date
+}
+```
+
 ## Helpers
 
 Let's say you've stored an object into the IBotDataBag, ie: PrivateConversationData and you want to progressively update it. 
