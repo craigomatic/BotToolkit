@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>BotToolkit</id>
+    <version>1.0.0</version>
+    <title>Bot Toolkit</title>
+    <authors>Craig Presti</authors>
+    <owners>Craig Presti</owners>
+    <licenseUrl>https://raw.githubusercontent.com/craigomatic/BotToolkit/master/LICENSE</licenseUrl>
+    <projectUrl>http://github.com/craigomatic/BotToolkit</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Toolkit that makes working with the Bot Framework simpler.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>Bots BotToolkit BotFramework Bot Menu</tags>
+	<dependencies>
+		<dependency id="Newtonsoft.Json" version="10.0.3" />
+	</dependencies>
+  </metadata>
+  <files>
+	<file src="..\src\BotToolkit\bin\Release\BotToolkit.dll" target="lib\net46\BotToolkit.dll" />    
+  </files>
+</package>

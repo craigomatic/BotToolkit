@@ -24,17 +24,8 @@ namespace BotToolkit
 
         public async Task StartAsync(IDialogContext context)
         {
-            if (this.Authenticator != null &&
-                (await this.Authenticator.CheckAuthAsync(context) == AuthenticationStatus.NotAuthenticated))
-            {
-                context.Wait(MessageReceivedAsync);
-            }
-            else
-            {
-                var choices = this.Menu.MenuItems.Select(m => m.Label);
-                PromptDialog.Choice<string>(context, _SelectionMade, choices, this.Menu.Prompt);
-            }
-        }
+            await _InitDialog(context);
+        }        
 
         private async Task _SelectionMade(IDialogContext context, IAwaitable<string> result)
         {
@@ -65,7 +56,8 @@ namespace BotToolkit
 
             var menuItemLabel = context.PrivateConversationData.Get<string>("CurrentMenuItem");
             var foundMenuItem = this.Menu.MenuItems.Where(m => m.Label == menuItemLabel).FirstOrDefault();
-            //foundMenuItem.Action.Complete(result);
+
+            await _InitDialog(context);
         }
 
         protected virtual async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
@@ -83,6 +75,20 @@ namespace BotToolkit
             {
                 _HandleCommand(context, command.Text);
             }
-        }        
+        }
+
+        private async Task _InitDialog(IDialogContext context)
+        {
+            if (this.Authenticator != null &&
+                            (await this.Authenticator.CheckAuthAsync(context) == AuthenticationStatus.NotAuthenticated))
+            {
+                context.Wait(MessageReceivedAsync);
+            }
+            else
+            {
+                var choices = this.Menu.MenuItems.Select(m => m.Label);
+                PromptDialog.Choice<string>(context, _SelectionMade, choices, this.Menu.Prompt);
+            }
+        }
     }
 }

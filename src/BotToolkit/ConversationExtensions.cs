@@ -15,6 +15,7 @@ namespace BotToolkit
         {
             var msg = _BuildMessage(context, items, messageText);
             msg.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+            
             return msg;
         }
 
