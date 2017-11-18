@@ -18,6 +18,6 @@
 	</dependencies>
   </metadata>
   <files>
-	<file src="..\src\BotToolkit\bin\Release\BotToolkit.dll" target="lib\net461\BotToolkit.dll" />    
+	<file src="..\..\src\BotToolkit\bin\Release\BotToolkit.dll" target="lib\net461\BotToolkit.dll" />    
   </files>
 </package>
